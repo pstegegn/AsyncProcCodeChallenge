@@ -17,6 +17,7 @@ int main() {
 
     FileWriteBackgroundTask fileWriteBackgroundTask;
 
+    //set log file
     fileWriteBackgroundTask.setLogFileName("log.txt");
 
     fileWriteBackgroundTask.setQueue(&threadSafeBlockingQueue);
@@ -29,6 +30,7 @@ int main() {
         std::cerr<<"Background task error:"<< e.what()<<std::endl;
     }
 
+    std::cout<<"To exit please enter (quit/exit/q)"<<std::endl;
     while (true) {
         std::string text;
         std::cout<<"Enter Text:";
@@ -36,7 +38,7 @@ int main() {
         if(text == "q" || text == "quit"|| text=="exit") {
             pigLatinConverter.cancel();
             fileWriteBackgroundTask.stop();
-            std::cout<<"Exiting"<<std::endl;
+            std::cout<<"Exiting..."<<std::endl;
             break;
         }
 

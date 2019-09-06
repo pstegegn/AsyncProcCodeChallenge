@@ -15,7 +15,7 @@ void FileWriteBackgroundTask::run()
             if(!q_->empty()) {
                 std::string textConverted = q_->pop().get();
                 oFile << textConverted<<std::endl;
-                std::cout<<textConverted << std::endl;
+//                std::cout<<textConverted << std::endl;
             }else{
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
