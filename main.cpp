@@ -1,6 +1,7 @@
 #include <iostream>
 #include "PigLatinConverter.h"
 #include "ThreadPool.h"
+#include "ThreadSafeBlockingQueue.h"
 #include <thread>
 
 int main() {
@@ -11,6 +12,8 @@ int main() {
     //create thread pool manager
     ThreadPool threadPoolMgr(std::thread::hardware_concurrency() - 2);
 
+    //thread safe queue for return of the
+    ThreadSafeBlockingQueue<std::future<std::string>> threadSafeBlockingQueue;
 
     while (true) {
         std::string text;
