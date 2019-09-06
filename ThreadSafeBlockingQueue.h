@@ -20,15 +20,15 @@ private:
 public:
     T pop() {
         std::unique_lock<std::mutex> lock(mutex_);
-        while (q_.empty())cvar_.wait(lock);
+        while (q_.empty()) cvar_.wait(lock);
         auto result = std::move(q_.front());
         q_.pop();
         return result;
     }
-    void push(const T&& item) {
+    void push( T&& item) {
         {
             std::unique_lock<std::mutex> lock(mutex_);
-            q_.push(item);
+            q_.push(std::move(item));
         }
         cvar_.notify_one();
     }

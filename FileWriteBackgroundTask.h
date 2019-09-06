@@ -9,6 +9,16 @@
 #include "Stoppable.h"
 #include "ThreadSafeBlockingQueue.h"
 
+struct OpenFileException : std::exception{
+    std::string filepath_;
+    explicit OpenFileException(const std::string & filepath){
+        filepath_ = filepath;
+    }
+    std::string what(){
+        return "Coud not open File Exception";
+    }
+};
+
 class FileWriteBackgroundTask: public Stoppable
 {
     std::thread thread_;
@@ -20,6 +30,10 @@ public:
     virtual void run();
     void start();
     void stop();
+
+    void setLogFileName(const std::string fileName){fileName_ = fileName;}
+
+    void setQueue(ThreadSafeBlockingQueue<std::future<std::string>> *pQueue){q_ = pQueue;};
 };
 
 #endif //ASYNCPROCCODECHALLENGE_FILEWRITEBACKGROUNDTASK_H

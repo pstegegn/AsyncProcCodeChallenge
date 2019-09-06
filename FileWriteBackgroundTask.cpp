@@ -2,24 +2,26 @@
 // Created by paulos on 9/5/19.
 //
 #include "FileWriteBackgroundTask.h"
+
 void FileWriteBackgroundTask::run()
 {
     std::ofstream oFile;
 
     oFile.open(fileName_, std::ios::out);
-    std::cout << "FileWriteBackgroundTask Start" << std::endl;
 
     if(oFile.is_open()){
         // Check if thread is requested to stop ?
         while (!stopRequested()) {
             if(!q_->empty()) {
-                oFile << "result"<<std::endl;
-                std::cout << "FileWriteBackgroundTask writing to file :"<<fileName_ << std::endl;
+                std::string textConverted = q_->pop().get();
+                oFile << textConverted<<std::endl;
+                std::cout<<textConverted << std::endl;
             }else{
                 std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
         }
-        std::cout << "FileWriteBackgroundTask End" << std::endl;
+    }else{
+        throw OpenFileException(fileName_);
     }
 
 }
@@ -30,5 +32,7 @@ void FileWriteBackgroundTask::start(){
 }
 
 void FileWriteBackgroundTask::stop() {
-//    Stoppable::stop();
+    Stoppable::stop();
+    thread_.join();
 }
+
